@@ -138,7 +138,7 @@ const mockData = {
 };
 
 // Save to JSON files
-const outputDir = path.join(__dirname, "output");
+const outputDir = path.join(__dirname);
 
 fs.writeFileSync(
   path.join(outputDir, "mockData.json"),

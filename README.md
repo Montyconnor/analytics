@@ -16,6 +16,8 @@ You'll be creating visualizations and metrics that track study participation rat
 - Use React and its ecosystem
 - Create clean, maintainable code with appropriate component structure
 - Implement responsive design that works well on different screen sizes
+- **Performance Challenge**: Dashboard must efficiently display and filter through 50,000+ participant records using pagination, virtualization, or other performance strategies
+- **Advanced Filtering**: Support simultaneous filtering across multiple dimensions (time range + study type + demographics + region + custom filters) with URL-persistent state
 
 ### Backend
 
@@ -24,6 +26,10 @@ You'll be creating visualizations and metrics that track study participation rat
 - Implement data transformation/aggregation logic
 - Add basic authentication for API access
 - Include appropriate error handling
+
+**Implement comprehensive tests for your application (unit tests for components and API endpoints, integration tests for key user flows)**
+
+**Include a detailed explanation of your data architecture strategy for production scale in your documentation**
 
 ## Technical Specifications
 
@@ -37,7 +43,13 @@ You'll be creating visualizations and metrics that track study participation rat
 - Users should be able to filter data by:
   - Time range (e.g., last 7 days, 14 days, 30 days)
   - Study type (e.g., Clinical Trials, Surveys, Focus Groups)
-  - Additional filters of your choice (age groups, regions, etc.)
+  - Demographics (age groups, regions, etc.)
+  - Multiple simultaneous filters that combine logically
+- **Advanced Filtering Requirements**:
+  - Support complex filter combinations (e.g., "Clinical Trials" AND "18-25 age group" AND "Last 30 days")
+  - Maintain filter state in URL for sharing and bookmarking
+  - Persist filter selections across page refreshes
+  - Provide clear filter state visualization and easy filter removal
 - Include a data refresh mechanism
 - Provide visual feedback during data loading
 - Implement a responsive design that works well on different screen sizes
@@ -51,9 +63,12 @@ Design and implement a set of RESTful API endpoints that provide:
 - Comparative data across different dimensions (study types, regions, demographics, etc.)
 
 Your API should:
+
 - Include appropriate query parameters for filtering data
 - Handle errors gracefully with appropriate status codes and messages
 - Follow RESTful design principles
+- **Performance Requirements**: Support efficient querying and filtering of large datasets (50,000+ records)
+- **Advanced Query Support**: Handle complex filter combinations and return paginated results
 
 ### Data Structure
 
@@ -149,27 +164,19 @@ We've provided mock data to help you get started:
 - The data structure aligns with the examples shown in this README
 - Feel free to modify or extend the data to suit your implementation
 
-## Additional Challenges (Optional)
-
-If you'd like to further demonstrate your skills, consider implementing any of these additional features:
-
-- Add unit and/or integration tests for your components and API endpoints
-- Implement data export functionality (CSV, PDF)
-- Add user preferences/settings that persist between sessions
-- Create a responsive mobile-friendly design
-- Add additional visualizations or interactive elements
-- Implement data caching strategies for improved performance
-
 ## Evaluation Criteria
 
 Your submission will be evaluated based on:
 
 - Code quality and organization
-- Component design and reusability 
+- Component design and reusability
 - User experience and interface design
 - API implementation and data handling
 - Error handling and edge cases
-- Performance considerations
+- Performance considerations (especially large dataset handling)
+- Advanced filtering implementation and state management
+- Testing coverage and quality
+- Data architecture understanding and scalability considerations
 - Problem-solving approach and technical decisions
 
 ## Deliverables
@@ -177,11 +184,13 @@ Your submission will be evaluated based on:
 - Complete source code in a Git repository
 - Instructions for running the application locally
 - Brief documentation explaining your technical choices and architecture
+- **Data Architecture Documentation**: Detailed explanation of how you would design the data persistence layer for production scale, including database choice, caching strategy, and query optimization approaches
+- Comprehensive test suite with good coverage
 - Notes on any features you would add or improve given more time
 
 ## Time Expectation
 
-You will have one week to complete this test. While we estimate the core requirements could be completed in approximately 4-6 hours of focused work, we're providing a week to accommodate your schedule and allow time for thoughtful implementation.
+You will have one week to complete this test. While we estimate the core requirements could be completed in approximately 8-10 hours of focused work, we're providing a week to accommodate your schedule and allow time for thoughtful implementation.
 
 We value quality over quantity, so focus on delivering a well-structured solution rather than implementing every possible feature. Use the time to demonstrate your best work and technical decision-making.
 

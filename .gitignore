@@ -17,7 +17,7 @@ build/
 .env.production.local
 
 # Generated mock data
-data/output/*.json
+data/*.json
 
 # Editor directories and files
 .idea/
