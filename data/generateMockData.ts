@@ -12,153 +12,97 @@ const STUDY_TYPES = [
   "Observational Studies",
 ];
 
-// Generate dates for the past 30 days
-const generateDatesForPastDays = (days: number) => {
-  const dates = [];
-  for (let i = days; i >= 0; i--) {
+// Define age groups
+const AGE_GROUPS = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"];
+
+// Define regions
+const REGIONS = [
+  "North America",
+  "Europe",
+  "Asia",
+  "South America",
+  "Africa",
+  "Australia",
+];
+
+// Generate daily metrics data (matches daily_metrics table)
+const generateDailyMetrics = () => {
+  const dailyMetrics: any[] = [];
+
+  for (let i = 0; i < 30; i++) {
     const date = new Date();
     date.setDate(date.getDate() - i);
-    dates.push(date.toISOString().split("T")[0]);
+    const dateStr = date.toISOString().split("T")[0];
+
+    // Generate metrics for each study type, age group, and region combination
+    STUDY_TYPES.forEach((studyType) => {
+      AGE_GROUPS.forEach((ageGroup) => {
+        REGIONS.forEach((region) => {
+          // Only add record if there's activity (randomly decide)
+          if (faker.datatype.boolean({ probability: 0.3 })) {
+            dailyMetrics.push({
+              date: dateStr,
+              studyId: faker.string.uuid(),
+              studyType,
+              ageGroup,
+              region,
+              applicationsCount: faker.number.int({ min: 0, max: 50 }),
+              completionsCount: faker.number.int({ min: 0, max: 30 }),
+              newParticipantsCount: faker.number.int({ min: 0, max: 20 }),
+              createdAt: new Date().toISOString(),
+            });
+          }
+        });
+      });
+    });
   }
-  return dates;
+
+  return dailyMetrics;
 };
 
-const dates = generateDatesForPastDays(30);
+// Generate filter options
+const generateFilterOptions = () => {
+  return {
+    studyTypes: STUDY_TYPES,
+    ageGroups: AGE_GROUPS,
+    regions: REGIONS,
+    timeRanges: ["7d", "14d", "30d"],
+  };
+};
 
-// Generate summary metrics
-const generateSummaryMetrics = () => {
-  const totalParticipants = faker.number.int({ min: 10000, max: 15000 });
-  const activeParticipants = faker.number.int({
-    min: 3000,
-    max: totalParticipants,
-  });
-  const totalStudies = faker.number.int({ min: 40, max: 60 });
-  const activeStudies = faker.number.int({ min: 15, max: totalStudies });
+// Main generation function
+const generateMockData = () => {
+  console.log("Generating daily metrics...");
+  const dailyMetrics = generateDailyMetrics();
+
+  console.log("Generating filter options...");
+  const filterOptions = generateFilterOptions();
 
   return {
-    totalParticipants,
-    activeParticipants,
-    totalStudies,
-    activeStudies,
-    averageEligibilityRate: faker.number.float({
-      min: 25,
-      max: 45,
-      multipleOf: 0.1,
-    }),
-    completionRate: faker.number.float({ min: 60, max: 80, multipleOf: 0.1 }),
+    dailyMetrics,
+    filterOptions,
   };
 };
 
-// Generate trend data for different metrics
-const generateTrendData = () => {
-  const metrics = [
-    {
-      name: "Study Applications",
-      data: dates.map((date) => ({
-        date,
-        value: faker.number.int({ min: 150, max: 450 }),
-      })),
-    },
-    {
-      name: "Study Completions",
-      data: dates.map((date) => ({
-        date,
-        value: faker.number.int({ min: 100, max: 300 }),
-      })),
-    },
-    {
-      name: "New Participants",
-      data: dates.map((date) => ({
-        date,
-        value: faker.number.int({ min: 50, max: 150 }),
-      })),
-    },
-  ];
-
-  // Create time range data for 7d, 14d, 30d
-  return {
-    timeRanges: {
-      "7d": {
-        interval: "day",
-        metrics: metrics.map((metric) => ({
-          name: metric.name,
-          data: metric.data.slice(-7),
-        })),
-      },
-      "14d": {
-        interval: "day",
-        metrics: metrics.map((metric) => ({
-          name: metric.name,
-          data: metric.data.slice(-14),
-        })),
-      },
-      "30d": {
-        interval: "day",
-        metrics,
-      },
-    },
-  };
-};
-
-// Generate comparison data across different dimensions
-const generateComparisonData = () => {
-  // Study type comparison
-  const studyTypeComparison = {
-    dimension: "studyType",
-    metrics: STUDY_TYPES.map((type) => ({
-      name: type,
-      applications: faker.number.int({ min: 500, max: 4000 }),
-      completions: faker.number.int({ min: 150, max: 3000 }),
-    })),
-  };
-
-  // Generate other comparison dimensions
-  const ageGroupComparison = {
-    dimension: "ageGroup",
-    metrics: ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"].map(
-      (group) => ({
-        name: group,
-        applications: faker.number.int({ min: 300, max: 4000 }),
-        completions: faker.number.int({ min: 80, max: 3000 }),
-      })
-    ),
-  };
-
-  return {
-    studyType: studyTypeComparison,
-    ageGroup: ageGroupComparison,
-  };
-};
-
-// Combine all the data
-const mockData = {
-  summary: generateSummaryMetrics(),
-  trends: generateTrendData(),
-  comparisons: generateComparisonData(),
-};
+// Generate and save data
+const mockData = generateMockData();
 
 // Save to JSON files
 const outputDir = path.join(__dirname);
 
+// Save only the files that the server actually uses
 fs.writeFileSync(
-  path.join(outputDir, "mockData.json"),
-  JSON.stringify(mockData, null, 2)
-);
-
-// Also save individual files for each main section
-fs.writeFileSync(
-  path.join(outputDir, "summary.json"),
-  JSON.stringify(mockData.summary, null, 2)
+  path.join(outputDir, "dailyMetrics.json"),
+  JSON.stringify(mockData.dailyMetrics, null, 2)
 );
 
 fs.writeFileSync(
-  path.join(outputDir, "trends.json"),
-  JSON.stringify(mockData.trends, null, 2)
-);
-
-fs.writeFileSync(
-  path.join(outputDir, "comparisons.json"),
-  JSON.stringify(mockData.comparisons, null, 2)
+  path.join(outputDir, "filterOptions.json"),
+  JSON.stringify(mockData.filterOptions, null, 2)
 );
 
 console.log("Mock data generated successfully!");
+console.log(`Generated ${mockData.dailyMetrics.length} daily metrics`);
+console.log(
+  `Generated filter options for ${mockData.filterOptions.studyTypes.length} study types, ${mockData.filterOptions.ageGroups.length} age groups, and ${mockData.filterOptions.regions.length} regions`
+);

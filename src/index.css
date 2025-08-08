@@ -1,0 +1,677 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.dashboard {
+  padding: 2rem 0;
+}
+
+.header {
+  background: white;
+  padding: 1.5rem 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  color: #1e293b;
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.card {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.card h3 {
+  color: #374151;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.metric:last-child {
+  margin-bottom: 0;
+}
+
+.metric-label {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.metric-value {
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.chart-container {
+  height: 300px;
+  margin-top: 1rem;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #6b7280;
+}
+
+.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+/* Filter Styles */
+.filters-container {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s;
+}
+
+.filter-toggle:hover {
+  background-color: #f3f4f6;
+}
+
+.active-indicator {
+  width: 8px;
+  height: 8px;
+  background-color: #ef4444;
+  border-radius: 50%;
+  margin-left: 0.25rem;
+}
+
+.clear-all {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: color 0.2s;
+}
+
+.clear-all:hover {
+  color: #374151;
+}
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.filter-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: #dbeafe;
+  color: #1e40af;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.filter-tag button {
+  background: none;
+  border: none;
+  color: #1e40af;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.filter-tag button:hover {
+  color: #dc2626;
+}
+
+.filter-controls {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.filter-group select {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background-color: white;
+  font-size: 0.875rem;
+  color: #374151;
+  transition: border-color 0.2s;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Comparison Charts Layout */
+.comparison-charts-container {
+  display: flex;
+  gap: 1rem;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.merged-age-chart {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.chart-toggle-button {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background: white;
+  color: #374151;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.chart-toggle-button:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.age-group-section {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+
+  .dashboard {
+    padding: 1.5rem 0;
+  }
+
+  .header {
+    padding: 1.25rem 0;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+
+  .chart-container {
+    height: 250px;
+  }
+}
+
+@media (max-width: 780px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+
+  .dashboard {
+    padding: 1rem 0;
+  }
+
+  .header {
+    padding: 1rem 0;
+  }
+
+  .header h1 {
+    font-size: 1.25rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .chart-container {
+    height: 200px;
+  }
+
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-3 .card {
+    margin-bottom: 0;
+  }
+
+  .grid-3 .metric {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .grid-3 .metric-label {
+    font-size: 0.75rem;
+  }
+
+  .grid-3 .metric-value {
+    font-size: 1rem;
+  }
+
+  .grid-3 .metric svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .filter-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .active-filters {
+    flex-wrap: wrap;
+  }
+
+  .filter-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .metric {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .metric-value {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.25rem;
+  }
+
+  .dashboard {
+    padding: 0.75rem 0;
+  }
+
+  .header {
+    padding: 0.75rem 0;
+  }
+
+  .header h1 {
+    font-size: 1.125rem;
+  }
+
+  .card {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+  }
+
+  .chart-container {
+    height: 180px;
+    margin-top: 0.75rem;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .metric-label {
+    font-size: 0.75rem;
+  }
+
+  .metric-value {
+    font-size: 0.875rem;
+  }
+
+  .grid-3 {
+    gap: 0.75rem;
+  }
+
+  .grid-3 .card {
+    padding: 0.75rem;
+  }
+
+  .grid-3 .metric {
+    gap: 0.125rem;
+  }
+
+  .grid-3 .metric-label {
+    font-size: 0.625rem;
+  }
+
+  .grid-3 .metric-value {
+    font-size: 0.875rem;
+  }
+
+  .grid-3 .metric svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .filters-container {
+    margin-bottom: 1rem;
+  }
+
+  .filter-controls {
+    gap: 0.75rem;
+  }
+
+  .filter-group select {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+
+  .chart-container {
+    min-height: 200px;
+  }
+}
+
+/* Desktop styles for comparison charts */
+@media (min-width: 781px) {
+  .comparison-charts-container {
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+    height: auto !important;
+  }
+
+  .comparison-charts-container .card {
+    width: 50% !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .age-group-section {
+    width: 100% !important;
+    flex-direction: row !important;
+    gap: 1rem !important;
+    align-items: stretch !important;
+    position: relative !important;
+    height: auto !important;
+  }
+
+  .age-group-section .card {
+    width: 50% !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .pie-chart-container {
+    flex-direction: row !important;
+    flex: 1 !important;
+    align-items: flex-start !important;
+  }
+
+  .pie-chart-container .chart-container {
+    width: auto !important;
+    flex: 1 !important;
+  }
+
+  .pie-chart-container .legend-container {
+    width: auto !important;
+    flex: 0 0 auto !important;
+  }
+
+  /* Ensure bar charts have enough space for angled labels */
+  .chart-container {
+    padding-bottom: 1rem !important;
+  }
+}
+
+/* Tablet and mobile styles - stack charts vertically */
+@media (max-width: 780px) {
+  .comparison-charts-container {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+  }
+
+  .comparison-charts-container .card {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .age-group-section {
+    width: 100% !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    align-items: stretch !important;
+  }
+
+  .age-group-section .card {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .pie-chart-container {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .pie-chart-container .chart-container {
+    width: 100% !important;
+    max-width: 300px !important;
+    height: 200px !important;
+    min-height: 200px !important;
+  }
+
+  .pie-chart-container .legend-container {
+    width: 100% !important;
+    padding-top: 0.5rem !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+
+  .pie-chart-container .legend-container > div {
+    font-size: 0.875rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .pie-chart-container .legend-container .legend-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+  }
+
+  .pie-chart-container .legend-container .legend-color {
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 2px !important;
+  }
+
+  /* Mobile bar chart optimizations */
+  .chart-container {
+    padding-bottom: 0.5rem !important;
+    min-height: 250px !important;
+  }
+} 
+
+/* Additional mobile optimizations */
+@media (max-width: 780px) {
+  /* Improve touch targets */
+  .chart-toggle-button {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.75rem;
+  }
+  
+  /* Better spacing for mobile */
+  .comparison-charts-container {
+    gap: 1.5rem;
+  }
+  
+  .age-group-section {
+    gap: 1.5rem;
+  }
+  
+  /* Improve chart readability on mobile */
+  .chart-container {
+    margin-top: 1rem;
+  }
+  
+  /* Better filter layout on mobile */
+  .filter-controls {
+    gap: 1rem;
+  }
+  
+  .filter-group {
+    margin-bottom: 0.5rem;
+  }
+  
+  .filter-group label {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .filter-group select {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+}
+
+/* Very small screen optimizations */
+@media (max-width: 480px) {
+  .comparison-charts-container {
+    gap: 1rem;
+  }
+  
+  .age-group-section {
+    gap: 1rem;
+  }
+  
+  .chart-toggle-button {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0.5rem;
+  }
+  
+  .chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .chart-header h3 {
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+} 

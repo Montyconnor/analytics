@@ -1,199 +1,263 @@
-# Analytics Dashboard Technical Test
+# Research Analytics Dashboard
 
-## Overview
+A modern, responsive dashboard for displaying research analytics data with real-time filtering and interactive charts.
 
-This technical test involves building an analytics dashboard application for a research participation platform. The dashboard will help researchers and administrators visualize and analyze how participants engage with various research studies.
+## 🚀 Features
 
-You'll be creating visualizations and metrics that track study participation rates, eligibility screening outcomes, completion rates, and demographic distributions across different research studies and time periods. The goal is to demonstrate your skills in frontend development with some backend integration.
+- **Real-time Data Filtering**: Filter data by time range, study type, age group, and region
+- **Interactive Charts**: Bar charts, pie charts, and trend line charts using Recharts
+- **Responsive Design**: Adapts to different screen sizes with mobile-first approach
+- **Performance Optimized**: Uses React.memo for efficient re-renders and optimized data fetching
+- **TypeScript Support**: Full type safety throughout the application
+- **API Authentication**: Secure API key-based authentication
+- **Modern Stack**: React 18, Vite, Express, TypeScript
 
-## Requirements
+## 🏗️ Architecture
 
-### Frontend
+### Frontend (React + TypeScript)
 
-- Create a responsive dashboard UI with at least 3 different visualization components (charts, graphs, etc.)
-- Implement filters to allow users to view data by different dimensions (time periods, categories, etc.)
-- Add data refresh functionality (polling or manual refresh)
-- Use React and its ecosystem
-- Create clean, maintainable code with appropriate component structure
-- Implement responsive design that works well on different screen sizes
-- **Performance Challenge**: Dashboard must efficiently display and filter through 50,000+ participant records using pagination, virtualization, or other performance strategies
-- **Advanced Filtering**: Support simultaneous filtering across multiple dimensions (time range + study type + demographics + region + custom filters) with URL-persistent state
+- **Framework**: React 18 with TypeScript
+- **Build Tool**: Vite for fast development and optimized builds
+- **Charts**: Recharts for interactive data visualization
+- **Styling**: CSS with responsive grid system
+- **State Management**: React hooks with optimized re-rendering
 
-### Backend
+### Backend (Node.js + Express)
 
-- Create RESTful API endpoints to serve dashboard data
-- Use Node and its ecosystem
-- Implement data transformation/aggregation logic
-- Add basic authentication for API access
-- Include appropriate error handling
+- **Runtime**: Node.js with TypeScript
+- **Framework**: Express.js with middleware support
+- **Authentication**: API key-based authentication
+- **Data**: Mock data generation with Faker.js
+- **Performance**: Compression and caching headers
 
-**Implement comprehensive tests for your application (unit tests for components and API endpoints, integration tests for key user flows)**
+## 🔐 API Authentication
 
-**Include a detailed explanation of your data architecture strategy for production scale in your documentation**
+This application uses API key authentication to ensure only the React frontend can interact with the backend server.
 
-## Technical Specifications
+### Setup
 
-### Dashboard Requirements
+1. **Option A: Automated Setup** (Recommended):
 
-- The dashboard should include at least these visualization types:
-  - Line chart (showing research participation trends over time)
-  - Bar chart (comparing metrics across study types or demographics)
-  - Summary cards/KPI indicators (showing key participation metrics)
-  - At least one additional visualization of your choice
-- Users should be able to filter data by:
-  - Time range (e.g., last 7 days, 14 days, 30 days)
-  - Study type (e.g., Clinical Trials, Surveys, Focus Groups)
-  - Demographics (age groups, regions, etc.)
-  - Multiple simultaneous filters that combine logically
-- **Advanced Filtering Requirements**:
-  - Support complex filter combinations (e.g., "Clinical Trials" AND "18-25 age group" AND "Last 30 days")
-  - Maintain filter state in URL for sharing and bookmarking
-  - Persist filter selections across page refreshes
-  - Provide clear filter state visualization and easy filter removal
-- Include a data refresh mechanism
-- Provide visual feedback during data loading
-- Implement a responsive design that works well on different screen sizes
+   ```bash
+   npm run setup:auth
+   ```
 
-### API Requirements
+2. **Option B: Manual Setup**:
 
-Design and implement a set of RESTful API endpoints that provide:
+   - **Create Environment File**: Copy the example environment file:
 
-- Summary metrics for research participation (participant counts, completion rates, etc.)
-- Time-series data for tracking trends over different time periods
-- Comparative data across different dimensions (study types, regions, demographics, etc.)
+     ```bash
+     cp env.example .env
+     ```
 
-Your API should:
+   - **Set API Key**: Edit the `.env` file and set a secure API key:
+     ```bash
+     API_KEY=your-secure-api-key-here
+     VITE_API_KEY=your-secure-api-key-here
+     ```
 
-- Include appropriate query parameters for filtering data
-- Handle errors gracefully with appropriate status codes and messages
-- Follow RESTful design principles
-- **Performance Requirements**: Support efficient querying and filtering of large datasets (50,000+ records)
-- **Advanced Query Support**: Handle complex filter combinations and return paginated results
+3. **Security Notes**:
+   - The API key should be a strong, random string
+   - Never commit the `.env` file to version control
+   - In production, use environment variables or secure key management
+   - The same key must be set for both frontend (`VITE_API_KEY`) and backend (`API_KEY`)
 
-### Data Structure
+### How It Works
 
-The application will work with research participation analytics data. Below are simplified examples of the data structure:
+- **Backend**: All API routes are protected by authentication middleware
+- **Frontend**: All API calls automatically include the API key in headers
+- **Static Files**: Authentication is bypassed for static assets and the main app route
+- **Error Handling**: Invalid or missing API keys return appropriate HTTP status codes
 
-```json
-// Example response for summary metrics
-{
-  "totalParticipants": 12500,
-  "activeParticipants": 4200,
-  "totalStudies": 48,
-  "activeStudies": 18,
-  "averageEligibilityRate": 32.5,
-  "completionRate": 68.7
-}
+### API Key Headers
 
-// Example response for trend data
-{
-  "timeRange": "7d",
-  "interval": "day",
-  "metrics": [
-    {
-      "name": "Study Applications",
-      "data": [
-        { "date": "2025-05-14", "value": 250 },
-        { "date": "2025-05-15", "value": 280 },
-        { "date": "2025-05-16", "value": 340 },
-        { "date": "2025-05-17", "value": 270 },
-        { "date": "2025-05-18", "value": 200 },
-        { "date": "2025-05-19", "value": 310 },
-        { "date": "2025-05-20", "value": 380 }
-      ]
-    },
-    {
-      "name": "Study Completions",
-      "data": [
-        { "date": "2025-05-14", "value": 180 },
-        { "date": "2025-05-15", "value": 190 },
-        { "date": "2025-05-16", "value": 210 },
-        { "date": "2025-05-17", "value": 175 },
-        { "date": "2025-05-18", "value": 140 },
-        { "date": "2025-05-19", "value": 200 },
-        { "date": "2025-05-20", "value": 220 }
-      ]
-    }
-  ]
-}
+The frontend sends the API key in the `X-API-Key` header:
 
-// Example response for comparison data
-{
-  "dimension": "studyType",
-  "metrics": [
-    {
-      "name": "Clinical Trials",
-      "applications": 1240,
-      "completions": 380
-    },
-    {
-      "name": "Surveys",
-      "applications": 3800,
-      "completions": 2800
-    },
-    {
-      "name": "Focus Groups",
-      "applications": 980,
-      "completions": 480
-    },
-    {
-      "name": "Longitudinal Studies",
-      "applications": 750,
-      "completions": 240
-    }
-  ]
-}
+```
+X-API-Key: your-secure-api-key-here
 ```
 
-## Getting Started
+## 📊 Components
 
-You will need to create your own project structure from scratch. This should include:
+### Core Components
 
-- A React frontend application
-- A Node.js backend with the required API endpoints
-- Mock data to populate the API responses
+- **`SummaryMetrics`**: Displays key performance indicators in a responsive grid
 
-How you structure your project and which specific libraries you choose to use is up to you. This is part of the evaluation to see how you approach building a full-stack application.
+  - Total Participants, Active Participants, Total Studies, Active Studies
+  - Average Eligibility Rate, Completion Rate
+  - Uses Lucide React icons for visual appeal
 
-### Mock Data
+- **`TrendsChart`**: Interactive line chart for time-series data
 
-We've provided mock data to help you get started:
+  - Supports multiple time ranges (7d, 14d, 30d)
+  - Shows Study Applications, Completions, and New Participants over time
+  - Responsive design with tooltips and legends
 
-- The `/data` directory contains a TypeScript script that generates realistic mock data
-- You can use this data directly or as a reference for creating your own data model
-- The data structure aligns with the examples shown in this README
-- Feel free to modify or extend the data to suit your implementation
+- **`ComparisonCharts`**: Multi-dimensional data comparison
 
-## Evaluation Criteria
+  - Study Type Performance (Bar Chart)
+  - Age Group Performance (Pie Charts or Bar Chart)
+  - Toggle between merged and split views
+  - Configurable chart types and layouts
 
-Your submission will be evaluated based on:
+- **`DataFilters`**: Interactive filtering interface
+  - Time Range selector (7d, 14d, 30d)
+  - Study Type filter (Clinical Trials, Surveys, Focus Groups, etc.)
+  - Age Group filter (18-24, 25-34, 35-44, etc.)
+  - Region filter (North America, Europe, Asia, etc.)
+  - Real-time URL parameter updates
 
-- Code quality and organization
-- Component design and reusability
-- User experience and interface design
-- API implementation and data handling
-- Error handling and edge cases
-- Performance considerations (especially large dataset handling)
-- Advanced filtering implementation and state management
-- Testing coverage and quality
-- Data architecture understanding and scalability considerations
-- Problem-solving approach and technical decisions
+### Chart Components
 
-## Deliverables
+- **`BarChart`**: Configurable bar chart component
 
-- Complete source code in a Git repository
-- Instructions for running the application locally
-- Brief documentation explaining your technical choices and architecture
-- **Data Architecture Documentation**: Detailed explanation of how you would design the data persistence layer for production scale, including database choice, caching strategy, and query optimization approaches
-- Comprehensive test suite with good coverage
-- Notes on any features you would add or improve given more time
+  - Supports applications and completions data
+  - Customizable colors and formatting
+  - Responsive design with tooltips
 
-## Time Expectation
+- **`PieChart`**: Interactive pie chart with legend
+  - Custom tooltips and color schemes
+  - Responsive layout with legend positioning
+  - Empty state handling
 
-You will have one week to complete this test. While we estimate the core requirements could be completed in approximately 8-10 hours of focused work, we're providing a week to accommodate your schedule and allow time for thoughtful implementation.
+## 🎨 Layout System
 
-We value quality over quantity, so focus on delivering a well-structured solution rather than implementing every possible feature. Use the time to demonstrate your best work and technical decision-making.
+The dashboard uses a flexible, responsive layout system:
 
-## Submission
+### Grid Layout
 
-Please submit your solution as a Git repository link. Make sure your repository is public or shared with the appropriate users.
+- **Summary Metrics**: 3-column grid on desktop, stacks on mobile
+- **Charts**: Full-width cards with consistent spacing
+- **Filters**: Sticky header with horizontal layout
+- **Responsive**: Mobile-first approach with breakpoints
+
+### Design System
+
+- **Colors**: Consistent color palette for charts and UI
+- **Typography**: Clean, readable font hierarchy
+- **Spacing**: Consistent spacing using CSS custom properties
+- **Cards**: Elevated card design with subtle shadows
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone <repository-url>
+   cd tt-20-05-25
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up authentication**:
+
+   ```bash
+   npm run setup:auth
+   ```
+
+4. **Start development server**:
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser**:
+   ```
+   http://localhost:5173
+   ```
+
+### Available Scripts
+
+- `npm run dev` - Start development server (frontend + backend)
+- `npm run dev:client` - Start frontend only
+- `npm run dev:server` - Start backend only
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm test` - Run tests
+- `npm run generate:data` - Generate mock data
+
+## 📁 Project Structure
+
+```
+tt-20-05-25/
+├── src/
+│   ├── components/
+│   │   ├── SummaryMetrics/     # Key performance indicators
+│   │   ├── TrendsChart/        # Time-series line charts
+│   │   ├── ComparisonCharts/   # Multi-dimensional comparisons
+│   │   ├── DataFilters/        # Interactive filtering
+│   │   ├── BarChart/          # Reusable bar chart
+│   │   └── PieChart/          # Reusable pie chart
+│   ├── App.tsx                # Main application component
+│   ├── config.ts              # API configuration
+│   └── index.css              # Global styles
+├── server/
+│   ├── helpers.ts             # Data processing utilities
+│   ├── index.ts               # Express server
+│   └── index.types.ts         # TypeScript types
+├── data/
+│   └── generateMockData.ts    # Mock data generation
+└── scripts/
+    └── setup-auth.sh          # Authentication setup
+```
+
+## 🧪 Testing
+
+The project includes comprehensive tests for all components:
+
+- **Unit Tests**: Component testing with Vitest and React Testing Library
+- **Integration Tests**: API endpoint testing
+- **Type Safety**: Full TypeScript coverage
+
+Run tests with:
+
+```bash
+npm test
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+- `PORT` - Server port (default: 3001)
+- `API_KEY` - Backend API key
+- `VITE_API_KEY` - Frontend API key
+- `NODE_ENV` - Environment mode
+
+### API Endpoints
+
+- `GET /api/summary` - Summary metrics data
+- `GET /api/trends` - Time-series trends data
+- `GET /api/comparisons` - Comparison data
+- `GET /api/filters` - Available filter options
+
+## 🎯 Performance Features
+
+- **Memoization**: React.memo for component optimization
+- **Lazy Loading**: Efficient data fetching
+- **Bundle Optimization**: Vite for fast builds and HMR
+
+## 📱 Responsive Design
+
+- **Desktop**: Full 3-column grid layout
+- **Tablet**: Adaptive grid with reduced spacing
+- **Mobile**: Single-column layout with touch-friendly controls
+
+## 🔄 Data Flow
+
+1. **Initial Load**: Dashboard loads with default filters (30d, all types)
+2. **Filter Changes**: URL parameters update, triggering new API calls
+3. **Data Fetching**: Optimized parallel API requests
+4. **State Management**: React hooks with refs for performance
+5. **Rendering**: Memoized components prevent unnecessary re-renders
